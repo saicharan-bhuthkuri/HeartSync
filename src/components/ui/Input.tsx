@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-xs font-semibold tracking-wide uppercase text-zinc-500 dark:text-zinc-400 pl-1"
+            className="text-[10px] font-black tracking-wider uppercase text-zinc-400 pl-1"
           >
             {label}
           </label>
@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           id={inputId}
-          className={`px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400 transition-all duration-200 text-sm ${
+          className={`px-4 py-2.5 rounded-2xl bg-white/70 border border-rose-100 text-[#3a1e22] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-rose-450/40 focus:border-pink-500 transition-all duration-200 text-sm ${
             error ? 'border-red-500 focus:ring-red-400/50 focus:border-red-500' : ''
           } ${className}`}
           {...props}
@@ -51,7 +51,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={textareaId}
-            className="text-xs font-semibold tracking-wide uppercase text-zinc-500 dark:text-zinc-400 pl-1"
+            className="text-[10px] font-black tracking-wider uppercase text-zinc-400 pl-1"
           >
             {label}
           </label>
@@ -59,7 +59,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           id={textareaId}
-          className={`px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400 transition-all duration-200 text-sm resize-none min-h-[100px] ${
+          className={`px-4 py-2.5 rounded-2xl bg-white/70 border border-rose-100 text-[#3a1e22] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-rose-450/40 focus:border-pink-500 transition-all duration-200 text-sm resize-none min-h-[100px] ${
             error ? 'border-red-500 focus:ring-red-400/50 focus:border-red-500' : ''
           } ${className}`}
           {...props}
@@ -93,7 +93,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="text-xs font-semibold tracking-wide uppercase text-zinc-500 dark:text-zinc-400 pl-1"
+            className="text-[10px] font-black tracking-wider uppercase text-zinc-400 pl-1"
           >
             {label}
           </label>
@@ -101,13 +101,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           id={selectId}
-          className={`px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-rose-400/50 focus:border-rose-400 transition-all duration-200 text-sm ${
+          className={`px-4 py-2.5 rounded-2xl bg-white/70 border border-rose-100 text-[#3a1e22] focus:outline-none focus:ring-2 focus:ring-rose-450/40 focus:border-pink-500 transition-all duration-200 text-sm ${
             error ? 'border-red-500 focus:ring-red-400/50 focus:border-red-500' : ''
           } ${className}`}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-white dark:bg-zinc-950">
+            <option key={opt.value} value={opt.value} className="bg-white">
               {opt.label}
             </option>
           ))}

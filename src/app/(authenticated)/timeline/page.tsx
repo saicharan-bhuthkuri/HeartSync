@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { Input, Textarea, Select } from '@/components/ui/Input';
-import { Plus, Edit, Trash2, Calendar, Sparkles, BookOpen, AlertCircle, Camera, Heart, MessageSquare, Phone, Users, Gift, Star, Award, MapPin } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Sparkles, BookOpen, AlertCircle, Heart, MessageSquare, Phone, Gift, Star, Award, MapPin } from 'lucide-react';
 
 interface Milestone {
   id: string;
@@ -191,35 +191,35 @@ export default function TimelinePage() {
     const markers: Record<string, { icon: React.ReactNode; bgClass: string }> = {
       first_chat: {
         icon: <MessageSquare className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-sky-400 to-blue-500 shadow-sky-500/20',
+        bgClass: 'bg-linear-to-tr from-sky-400 to-blue-500 shadow-sm shadow-sky-500/20',
       },
       first_call: {
         icon: <Phone className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-teal-400 to-emerald-500 shadow-teal-500/20',
+        bgClass: 'bg-linear-to-tr from-teal-400 to-emerald-500 shadow-sm shadow-teal-500/20',
       },
       first_meeting: {
         icon: <MapPin className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-orange-400 to-amber-500 shadow-orange-500/20',
+        bgClass: 'bg-linear-to-tr from-orange-400 to-amber-500 shadow-sm shadow-orange-500/20',
       },
       first_date: {
         icon: <Heart className="h-4 w-4 text-white fill-current animate-pulse" />,
-        bgClass: 'bg-linear-to-tr from-rose-500 to-pink-500 shadow-rose-500/20',
+        bgClass: 'bg-linear-to-tr from-pink-500 to-rose-450 shadow-sm shadow-rose-500/20',
       },
       proposal: {
         icon: <Award className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-amber-400 to-yellow-600 shadow-amber-500/20',
+        bgClass: 'bg-linear-to-tr from-amber-400 to-yellow-600 shadow-sm shadow-amber-500/20',
       },
       anniversary: {
         icon: <Sparkles className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-pink-500 to-purple-600 shadow-purple-500/20',
+        bgClass: 'bg-linear-to-tr from-pink-500 to-purple-600 shadow-sm shadow-purple-500/20',
       },
       birthday: {
         icon: <Gift className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-purple-400 to-indigo-500 shadow-indigo-500/20',
+        bgClass: 'bg-linear-to-tr from-purple-400 to-indigo-500 shadow-sm shadow-indigo-500/20',
       },
       custom: {
         icon: <Star className="h-4 w-4 text-white" />,
-        bgClass: 'bg-linear-to-tr from-zinc-400 to-zinc-600 shadow-zinc-500/20',
+        bgClass: 'bg-linear-to-tr from-zinc-400 to-zinc-650 shadow-sm shadow-zinc-500/20',
       },
     };
     return markers[type] || {
@@ -250,37 +250,37 @@ export default function TimelinePage() {
   return (
     <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto pb-10">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-left">
         <div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 flex items-center">
+          <h2 className="text-2xl md:text-3xl font-serif italic font-extrabold text-[#3a1e22] flex items-center">
             <Sparkles className="h-6 w-6 mr-2 text-rose-500" /> Our Timeline
           </h2>
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+          <p className="text-zinc-500 text-sm mt-1 font-medium">
             A chronological memory lane of our love story
           </p>
         </div>
-        <Button onClick={handleOpenCreate} className="w-full sm:w-auto">
+        <Button onClick={handleOpenCreate} className="w-full sm:w-auto shadow-md shadow-pink-500/10 border-0 bg-linear-to-r from-pink-500 to-rose-450 hover:from-pink-600 hover:to-rose-550 text-white font-extrabold uppercase tracking-wide text-xs">
           <Plus className="h-4 w-4 mr-2" /> Add Milestone
         </Button>
       </div>
 
       {loading ? (
-        <div className="space-y-6 animate-pulse pl-8 border-l-2 border-zinc-150/10 dark:border-zinc-800/10">
+        <div className="space-y-6 animate-pulse pl-8 border-l-2 border-zinc-100">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-zinc-100/10 dark:bg-zinc-900/10 rounded-3xl" />
+            <div key={i} className="h-32 bg-zinc-100 rounded-3xl" />
           ))}
         </div>
       ) : error ? (
         <div className="flex flex-col items-center justify-center p-8 text-center bg-red-500/5 rounded-3xl border border-red-500/10 max-w-md mx-auto">
           <AlertCircle className="h-10 w-10 text-red-500 mb-3" />
-          <p className="text-zinc-800 dark:text-zinc-200 font-bold">{error}</p>
+          <p className="text-zinc-800 font-bold">{error}</p>
           <Button onClick={fetchMilestones} className="mt-4" variant="secondary">Retry</Button>
         </div>
       ) : milestones.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-[32px] max-w-lg mx-auto bg-white/20 dark:bg-zinc-950/20">
+        <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-rose-200 rounded-[32px] max-w-lg mx-auto bg-white/40">
           <span className="text-4xl mb-4">✨</span>
-          <h3 className="text-lg font-bold text-zinc-850 dark:text-zinc-200">Your timeline is empty</h3>
-          <p className="text-zinc-500 text-xs mt-1.5 max-w-md leading-relaxed">
+          <h3 className="text-lg font-serif italic font-bold text-zinc-850">Your timeline is empty</h3>
+          <p className="text-zinc-550 text-xs mt-1.5 max-w-md leading-relaxed font-medium">
             Start cataloging your story. Add your first chat, your first date, or any special memory that brings a smile.
           </p>
           <Button onClick={handleOpenCreate} className="mt-6">
@@ -289,10 +289,10 @@ export default function TimelinePage() {
         </div>
       ) : (
         /* VISUAL VERTICAL TIMELINE CONTAINER */
-        <div className="relative pl-7 md:pl-10 ml-5 md:ml-6 py-4 space-y-8">
+        <div className="relative pl-7 md:pl-10 ml-5 md:ml-6 py-4 space-y-8 text-left">
           
-          {/* Glowing Vertical Timeline Track */}
-          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-linear-to-b from-rose-400 via-pink-400 to-violet-400 dark:from-rose-950 dark:via-pink-900 dark:to-violet-950 rounded-full" />
+          {/* Glowing Vertical Timeline Track Styled like a Ribbon/Stitched line */}
+          <div className="absolute left-0 top-0 bottom-0 w-0 border-l-2 border-dashed border-rose-350" />
 
           {milestones.map((milestone) => {
             const marker = getEventTypeMarker(milestone.event_type);
@@ -300,22 +300,24 @@ export default function TimelinePage() {
               <div key={milestone.id} className="relative">
                 
                 {/* Custom Event Icon Timeline Marker Point */}
-                <div className={`absolute left-[-41px] md:left-[-51px] top-3 flex items-center justify-center h-7 w-7 md:h-8 md:w-8 rounded-full ${marker.bgClass} border-4 border-white dark:border-zinc-950 shadow-md transition-transform hover:scale-110 z-10`}>
+                <div className={`absolute left-[-39px] md:left-[-49px] top-3.5 flex items-center justify-center h-7 w-7 md:h-8 md:w-8 rounded-full ${marker.bgClass} border-4 border-white shadow-md transition-transform hover:scale-110 z-10`}>
                   {marker.icon}
                 </div>
 
-                {/* Milestone Box Content */}
-                <Card variant="glass" className="hover:border-rose-500/20 transition-all p-6 bg-white/40 dark:bg-zinc-950/40">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                {/* Milestone Card content (Polaroid-frame styled if has photo, else scrapbook washi-taped card) */}
+                <Card variant="glass" className="hover:border-rose-450/25 transition-all p-6 bg-white/80 relative overflow-hidden">
+                  <div className="washi-tape-gold" />
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pt-2">
                     <div>
                       {/* Badge event type */}
-                      <span className="inline-block text-[9px] font-extrabold uppercase tracking-widest bg-rose-100/60 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 px-3 py-1 rounded-full mb-2.5">
+                      <span className="inline-block text-[9px] font-bold uppercase tracking-widest bg-rose-50 text-rose-700 px-3 py-1 rounded-full mb-2.5 border border-rose-100/50">
                         {getEventTypeLabel(milestone.event_type)}
                       </span>
-                      <h3 className="text-lg font-black text-zinc-900 dark:text-zinc-50">
+                      <h3 className="text-xl font-serif italic font-extrabold text-zinc-900 leading-tight">
                         {milestone.title}
                       </h3>
-                      <p className="text-xs text-zinc-400 dark:text-zinc-500 flex items-center mt-1.5 font-medium">
+                      <p className="text-xs text-zinc-400 flex items-center mt-1.5 font-medium">
                         <Calendar className="h-3.5 w-3.5 mr-1" /> {formatFriendlyDate(milestone.event_date)}
                       </p>
                     </div>
@@ -323,7 +325,7 @@ export default function TimelinePage() {
                     {/* Actions Header */}
                     <div className="flex items-center space-x-1 sm:self-start mt-2 sm:mt-0">
                       <Link href={`/journal?milestoneId=${milestone.id}`} title="Add Journal Note">
-                        <Button variant="ghost" size="sm" className="p-2 h-9 w-9 text-zinc-400 hover:text-rose-500 hover:bg-rose-500/5 dark:hover:bg-rose-500/10 rounded-full">
+                        <Button variant="ghost" size="sm" className="p-2 h-9 w-9 text-zinc-400 hover:text-pink-650 hover:bg-rose-500/5 rounded-full">
                           <BookOpen className="h-4 w-4" />
                         </Button>
                       </Link>
@@ -331,7 +333,7 @@ export default function TimelinePage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleOpenEdit(milestone)}
-                        className="p-2 h-9 w-9 text-zinc-400 hover:text-amber-500 hover:bg-amber-500/5 dark:hover:bg-amber-500/10 rounded-full"
+                        className="p-2 h-9 w-9 text-zinc-400 hover:text-amber-600 hover:bg-amber-500/5 rounded-full"
                         title="Edit Milestone"
                       >
                         <Edit className="h-4 w-4" />
@@ -340,7 +342,7 @@ export default function TimelinePage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleOpenDelete(milestone)}
-                        className="p-2 h-9 w-9 text-zinc-400 hover:text-red-500 hover:bg-red-500/5 dark:hover:bg-red-500/10 rounded-full"
+                        className="p-2 h-9 w-9 text-zinc-400 hover:text-red-500 hover:bg-red-500/5 rounded-full"
                         title="Delete Milestone"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -349,18 +351,23 @@ export default function TimelinePage() {
                   </div>
 
                   {milestone.description && (
-                    <p className="text-sm text-zinc-650 dark:text-zinc-350 mt-4 whitespace-pre-line leading-relaxed">
+                    <p className="text-sm text-zinc-650 mt-4 whitespace-pre-line leading-relaxed font-medium border-l-2 border-rose-100 pl-3.5">
                       {milestone.description}
                     </p>
                   )}
 
                   {milestone.photo_url && (
-                    <div className="mt-5 rounded-3xl overflow-hidden max-h-96 w-full border border-zinc-100 dark:border-zinc-900 shadow-xs">
-                      <img
-                        src={milestone.photo_url}
-                        alt={milestone.title}
-                        className="object-cover w-full h-full hover:scale-[1.02] transition-transform duration-500"
-                      />
+                    <div className="mt-5 p-3 pb-8 bg-white border border-rose-500/5 shadow-md rounded-[4px] max-w-xl mx-auto rotate-[0.5deg]">
+                      <div className="rounded-xs overflow-hidden max-h-96 w-full border border-zinc-100">
+                        <img
+                          src={milestone.photo_url}
+                          alt={milestone.title}
+                          className="object-cover w-full h-full hover:scale-[1.01] transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="mt-3 text-center text-[10px] text-zinc-400 font-serif italic">
+                        ❤ Captured on {formatFriendlyDate(milestone.event_date)}
+                      </div>
                     </div>
                   )}
                 </Card>
@@ -372,7 +379,7 @@ export default function TimelinePage() {
 
       {/* CREATE MODAL DIALOG */}
       <Dialog isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} title="Add New Milestone">
-        <form onSubmit={handleCreateMilestone} className="space-y-4">
+        <form onSubmit={handleCreateMilestone} className="space-y-4 text-left">
           {formError && <div className="p-3 bg-red-500/10 border border-red-500/20 text-xs font-semibold text-red-500 rounded-2xl">{formError}</div>}
           
           <Input
@@ -423,7 +430,7 @@ export default function TimelinePage() {
             <Button type="button" variant="outline" onClick={() => setIsCreateOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" isLoading={isSubmitting}>
+            <Button type="submit" isLoading={isSubmitting} className="border-0 bg-linear-to-r from-pink-500 to-rose-450 text-white">
               Save Milestone
             </Button>
           </div>
@@ -432,7 +439,7 @@ export default function TimelinePage() {
 
       {/* EDIT MODAL DIALOG */}
       <Dialog isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} title="Edit Milestone">
-        <form onSubmit={handleEditMilestone} className="space-y-4">
+        <form onSubmit={handleEditMilestone} className="space-y-4 text-left">
           {formError && <div className="p-3 bg-red-500/10 border border-red-500/20 text-xs font-semibold text-red-500 rounded-2xl">{formError}</div>}
 
           <Input
@@ -481,7 +488,7 @@ export default function TimelinePage() {
             <Button type="button" variant="outline" onClick={() => setIsEditOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" isLoading={isSubmitting}>
+            <Button type="submit" isLoading={isSubmitting} className="border-0 bg-linear-to-r from-pink-500 to-rose-450 text-white">
               Save Changes
             </Button>
           </div>
@@ -490,11 +497,11 @@ export default function TimelinePage() {
 
       {/* DELETE MODAL DIALOG */}
       <Dialog isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} title="Delete Milestone">
-        <div className="space-y-4">
-          <p className="text-zinc-650 dark:text-zinc-300 text-sm">
-            Are you sure you want to delete the milestone <strong className="text-zinc-800 dark:text-zinc-100">"{selectedMilestone?.title}"</strong>?
+        <div className="space-y-4 text-left">
+          <p className="text-zinc-650 text-sm">
+            Are you sure you want to delete the milestone <strong className="text-zinc-800">"{selectedMilestone?.title}"</strong>?
           </p>
-          <div className="p-3 rounded-2xl bg-red-500/5 border border-red-500/10 text-xs text-red-650 dark:text-red-400 flex items-start">
+          <div className="p-3 rounded-2xl bg-red-500/5 border border-red-500/10 text-xs text-red-650 flex items-start">
             <AlertCircle className="h-4 w-4 mr-2 shrink-0 mt-0.5" />
             <span>This action is permanent and will also delete any memories linked directly to this milestone.</span>
           </div>

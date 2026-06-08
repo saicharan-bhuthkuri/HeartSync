@@ -30,15 +30,15 @@ export function Navbar() {
     <>
       {/* Desktop Navigation Top Bar */}
       <header className="sticky top-0 z-40 hidden md:block w-full px-6 py-4">
-        <nav className="max-w-6xl mx-auto glass-panel px-6 py-3.5 flex items-center justify-between rounded-full">
-          <Link href="/dashboard" className="flex items-center space-x-2 text-rose-600 dark:text-rose-400 group">
-            <Heart className="h-6 w-6 fill-current group-hover:scale-110 transition-transform animate-pulse" />
-            <span className="font-extrabold text-lg tracking-tight bg-linear-to-r from-rose-600 to-pink-500 dark:from-rose-400 dark:to-pink-400 bg-clip-text text-transparent">
+        <nav className="max-w-6xl mx-auto glass-panel px-6 py-3.5 flex items-center justify-between rounded-full bg-white/85">
+          <Link href="/dashboard" className="flex items-center space-x-2 text-rose-500 group">
+            <Heart className="h-6 w-6 fill-current group-hover:scale-110 transition-transform animate-pulse text-pink-500" />
+            <span className="font-serif italic font-extrabold text-xl tracking-tight bg-linear-to-r from-pink-650 via-rose-600 to-amber-600 bg-clip-text text-transparent">
               HeartSync
             </span>
           </Link>
 
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname.startsWith(item.href);
@@ -46,13 +46,13 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 transition-all ${
+                  className={`px-4.5 py-2 rounded-full text-xs font-bold uppercase tracking-wider flex items-center space-x-2 transition-all duration-300 ${
                     isActive
-                      ? 'bg-rose-500 text-white shadow-sm shadow-rose-500/10'
-                      : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900/60'
+                      ? 'bg-linear-to-r from-pink-500 to-rose-450 text-white shadow-md shadow-pink-500/10'
+                      : 'text-zinc-650 hover:bg-rose-500/5 hover:text-pink-650'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-3.5 w-3.5" />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -62,13 +62,13 @@ export function Navbar() {
           <div className="flex items-center space-x-4">
             
             {/* Couple Avatars/Initials Badge */}
-            <div className="h-8.5 px-3 rounded-full bg-rose-50 dark:bg-rose-950/30 border border-rose-100 dark:border-rose-900/40 text-xs font-semibold text-rose-700 dark:text-rose-300 flex items-center justify-center">
+            <div className="h-8.5 px-3 rounded-full bg-rose-500/5 border border-rose-500/10 text-xs font-bold text-pink-650 flex items-center justify-center shadow-xs">
               {getInitials(user.partnerName1, user.partnerName2)}
             </div>
 
             <button
               onClick={logout}
-              className="p-2.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-400 hover:text-red-500 transition-colors"
+              className="p-2.5 rounded-full hover:bg-red-500/5 text-zinc-400 hover:text-red-500 transition-colors cursor-pointer"
               title="Log Out"
             >
               <LogOut className="h-4.5 w-4.5" />
@@ -78,10 +78,10 @@ export function Navbar() {
       </header>
 
       {/* Mobile Top Header */}
-      <header className="sticky top-0 z-40 md:hidden w-full px-4 py-3 flex items-center justify-between bg-white/70 dark:bg-zinc-950/70 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-900">
-        <Link href="/dashboard" className="flex items-center space-x-1.5 text-rose-600 dark:text-rose-400">
-          <Heart className="h-5 w-5 fill-current" />
-          <span className="font-extrabold text-base tracking-tight bg-linear-to-r from-rose-600 to-pink-500 dark:from-rose-400 dark:to-pink-400 bg-clip-text text-transparent">
+      <header className="sticky top-0 z-40 md:hidden w-full px-4 py-3 flex items-center justify-between bg-white/80 backdrop-blur-md border-b border-rose-500/5">
+        <Link href="/dashboard" className="flex items-center space-x-1.5 text-rose-500">
+          <Heart className="h-5 w-5 fill-current text-pink-500" />
+          <span className="font-serif italic font-extrabold text-lg tracking-tight bg-linear-to-r from-pink-650 via-rose-600 to-amber-600 bg-clip-text text-transparent">
             HeartSync
           </span>
         </Link>
@@ -97,7 +97,7 @@ export function Navbar() {
       </header>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden pb-safe px-4 py-2 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-lg border-t border-zinc-100 dark:border-zinc-900 flex justify-around">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden pb-safe px-4 py-2 bg-white/90 backdrop-blur-lg border-t border-rose-500/5 flex justify-around shadow-lg">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname.startsWith(item.href);
@@ -105,14 +105,14 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all ${
+              className={`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all duration-300 ${
                 isActive
-                  ? 'text-rose-600 dark:text-rose-400'
-                  : 'text-zinc-400 dark:text-zinc-500'
+                  ? 'text-pink-600 scale-105'
+                  : 'text-zinc-400'
               }`}
             >
               <Icon className="h-5 w-5 mb-0.5" />
-              <span className="text-[10px] font-medium tracking-wide">{item.label}</span>
+              <span className="text-[10px] font-bold tracking-wide uppercase">{item.label}</span>
             </Link>
           );
         })}

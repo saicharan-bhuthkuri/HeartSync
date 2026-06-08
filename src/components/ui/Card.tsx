@@ -12,10 +12,10 @@ export function Card({
   padding = 'md',
   ...props
 }: CardProps) {
-  const baseStyles = 'rounded-3xl border border-zinc-100 dark:border-zinc-900 bg-white dark:bg-zinc-950 overflow-hidden';
+  const baseStyles = 'rounded-3xl border border-rose-100 bg-white overflow-hidden';
   
   const variants = {
-    default: 'shadow-sm shadow-zinc-100/40 dark:shadow-none',
+    default: 'shadow-sm shadow-rose-100/30',
     glass: 'glass-panel',
     interactive: 'glass-panel glass-panel-hover cursor-pointer',
   };

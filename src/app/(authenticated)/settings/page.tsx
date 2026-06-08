@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '@/components/AppContext';
 import { Card } from '@/components/ui/Card';
-import { Input, Select } from '@/components/ui/Input';
+import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Settings, Save, AlertCircle, CheckCircle, Bell, User } from 'lucide-react';
 
@@ -47,7 +47,6 @@ export default function SettingsPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -72,10 +71,6 @@ export default function SettingsPage() {
         throw new Error(json.error || 'Failed to update profile settings');
       }
 
-      // 2. Mock save reminders configuration
-      // In a production app, this would hit an API storing these defaults in the database.
-      // We will simulate saving successfully.
-
       // Update local state
       if (user) {
         setUser({
@@ -99,24 +94,23 @@ export default function SettingsPage() {
     }
   };
 
-
   return (
-    <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto text-left">
       {/* Page Header */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 flex items-center">
+        <h2 className="text-2xl md:text-3xl font-serif italic font-extrabold text-[#3a1e22] flex items-center">
           <Settings className="h-6 w-6 mr-2 text-rose-500" /> Space Settings
         </h2>
-        <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
-          Customize your relationship timeline, notification preferences, and styling themes
+        <p className="text-zinc-500 text-sm mt-1 font-medium">
+          Customize your relationship timeline, notification preferences, and styling details
         </p>
       </div>
 
       {status && (
         <div className={`p-4 rounded-2xl flex items-start space-x-2 border animate-fade-in-up ${
           status.type === 'success' 
-            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
-            : 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400'
+            ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' 
+            : 'bg-red-500/10 border-red-500/20 text-red-600'
         }`}>
           {status.type === 'success' ? (
             <CheckCircle className="h-5 w-5 shrink-0 mt-0.5" />
@@ -130,8 +124,9 @@ export default function SettingsPage() {
       <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* PROFILE SECTION */}
         <div className="md:col-span-2 space-y-6">
-          <Card variant="glass" className="space-y-4">
-            <h3 className="text-sm font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center mb-2">
+          <Card variant="glass" className="space-y-4 bg-white/80 relative overflow-hidden pt-6">
+            <div className="washi-tape-gold" />
+            <h3 className="text-xs font-black uppercase tracking-wider text-zinc-400 flex items-center mb-2 pt-2">
               <User className="h-4.5 w-4.5 mr-1.5 text-rose-500" /> Relationship Profile
             </h3>
 
@@ -181,8 +176,9 @@ export default function SettingsPage() {
           </Card>
 
           {/* NOTIFICATION PREFERENCES */}
-          <Card variant="glass" className="space-y-4">
-            <h3 className="text-sm font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center mb-2">
+          <Card variant="glass" className="space-y-4 bg-white/80 relative overflow-hidden pt-6">
+            <div className="washi-tape" />
+            <h3 className="text-xs font-black uppercase tracking-wider text-zinc-400 flex items-center mb-2 pt-2">
               <Bell className="h-4.5 w-4.5 mr-1.5 text-rose-500" /> Reminder Configurations
             </h3>
 
@@ -192,12 +188,12 @@ export default function SettingsPage() {
               type="email"
               disabled
               value={notificationEmail}
-              className="opacity-70 bg-zinc-100 dark:bg-zinc-900 cursor-not-allowed"
+              className="opacity-70 bg-zinc-100 cursor-not-allowed border-rose-100"
               placeholder="Primary email"
             />
 
             <div className="space-y-3 pt-2">
-              <span className="text-xs font-semibold tracking-wide uppercase text-zinc-500 dark:text-zinc-400 pl-1">
+              <span className="text-[10px] font-black tracking-wide uppercase text-zinc-400 pl-1">
                 Default Milestone Reminders
               </span>
               
@@ -210,7 +206,7 @@ export default function SettingsPage() {
                 ].map((item) => (
                   <label
                     key={item.key}
-                    className="flex items-center space-x-3 text-sm font-medium text-zinc-700 dark:text-zinc-350 cursor-pointer pl-1"
+                    className="flex items-center space-x-3 text-sm font-semibold text-zinc-700 cursor-pointer pl-1"
                   >
                     <input
                       type="checkbox"
@@ -221,7 +217,7 @@ export default function SettingsPage() {
                           [item.key]: e.target.checked,
                         })
                       }
-                      className="rounded text-rose-600 focus:ring-rose-400 h-4.5 w-4.5 border-zinc-300 bg-white dark:bg-zinc-900"
+                      className="rounded text-pink-500 focus:ring-pink-400 h-4.5 w-4.5 border-rose-200 bg-white"
                     />
                     <span>{item.label}</span>
                   </label>
@@ -235,7 +231,7 @@ export default function SettingsPage() {
         <div className="space-y-6">
           <Button
             type="submit"
-            className="w-full flex items-center justify-center py-3 rounded-2xl"
+            className="w-full flex items-center justify-center py-3 rounded-2xl shadow-md shadow-pink-500/10 border-0 bg-linear-to-r from-pink-500 to-rose-450 hover:from-pink-600 hover:to-rose-550 text-white font-extrabold uppercase tracking-wider text-xs"
             isLoading={isLoading}
           >
             <Save className="h-4 w-4 mr-2" /> Save All Settings
