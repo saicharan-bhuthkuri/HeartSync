@@ -29,7 +29,14 @@ export async function POST(request: Request) {
     const filename = `${safeName}-${uniqueSuffix}${ext}`;
     
     // Hybrid approach: if BLOB_READ_WRITE_TOKEN is defined, upload to Vercel Blob.
-    // Otherwise, fallback to local file system (ideal for local development).
+    // If we are on Vercel but the token is missing, return a clear error instead of failing on read-only local fs.
+    if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+      return NextResponse.json(
+        { error: 'Vercel Blob storage is not connected. Please go to your Vercel Project Dashboard -> Storage tab and create/connect a Blob store.' },
+        { status: 400 }
+      );
+    }
+
     if (process.env.BLOB_READ_WRITE_TOKEN) {
       try {
         const blob = await put(`uploads/${filename}`, file, {
