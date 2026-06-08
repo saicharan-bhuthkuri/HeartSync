@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { Input, Textarea, Select } from '@/components/ui/Input';
 import { Search, BookOpen, Plus, Calendar, Edit, Trash2, Link as LinkIcon, Sparkles } from 'lucide-react';
+import { MediaUpload } from '@/components/ui/MediaUpload';
 
 interface Memory {
   id: string;
@@ -373,11 +374,26 @@ function JournalContent() {
                 {memory.image_url && (
                   <div className="p-3 pb-8 bg-white border border-rose-500/5 shadow-md rounded-[4px] -rotate-1 max-w-md mx-auto">
                     <div className="rounded-xs overflow-hidden max-h-60 w-full border border-zinc-100">
-                      <img
-                        src={memory.image_url}
-                        alt={memory.title}
-                        className="object-cover w-full h-full"
-                      />
+                      {(() => {
+                        const lower = memory.image_url.toLowerCase();
+                        const isVid = ['.mp4', '.webm', '.ogg', '.mov'].some(ext => lower.endsWith(ext)) || lower.includes('video') || lower.includes('/uploads/video');
+                        if (isVid) {
+                          return (
+                            <video
+                              src={memory.image_url}
+                              className="w-full h-full object-cover max-h-60"
+                              controls
+                            />
+                          );
+                        }
+                        return (
+                          <img
+                            src={memory.image_url}
+                            alt={memory.title}
+                            className="object-cover w-full h-full"
+                          />
+                        );
+                      })()}
                     </div>
                     <div className="mt-3 text-center text-[9px] text-zinc-400 font-serif italic">
                       Captured details
@@ -431,13 +447,11 @@ function JournalContent() {
             placeholder="Write down what happened, how it felt, or letters to each other..."
           />
 
-          <Input
-            label="Optional Photo URL"
-            name="imageUrl"
-            type="url"
+          <MediaUpload
+            label="Optional Photo / Video"
             value={formData.imageUrl}
-            onChange={handleFormChange}
-            placeholder="e.g. Photo link starting with https://"
+            onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+            placeholder="e.g. Photo link starting with https:// or upload a file"
           />
 
           <div className="pt-2 flex justify-end space-x-2">
@@ -490,13 +504,11 @@ function JournalContent() {
             onChange={handleFormChange}
           />
 
-          <Input
-            label="Photo URL"
-            name="imageUrl"
-            type="url"
+          <MediaUpload
+            label="Photo / Video"
             value={formData.imageUrl}
-            onChange={handleFormChange}
-            placeholder="e.g. https://..."
+            onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+            placeholder="e.g. https:// or upload a file"
           />
 
           <div className="pt-2 flex justify-end space-x-2">

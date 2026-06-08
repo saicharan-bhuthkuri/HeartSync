@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { Settings, Save, AlertCircle, CheckCircle, Bell, User, Music, Trash2 } from 'lucide-react';
+import { MediaUpload } from '@/components/ui/MediaUpload';
 import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
@@ -14,6 +15,8 @@ export default function SettingsPage() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
+    email: '',
+    email2: '',
     partnerName1: '',
     partnerName2: '',
     relationshipStartDate: '',
@@ -23,7 +26,6 @@ export default function SettingsPage() {
   });
 
   // Reminder settings state
-  const [notificationEmail, setNotificationEmail] = useState('');
   const [reminderPref, setReminderPref] = useState({
     thirtyDaysBefore: true,
     sevenDaysBefore: true,
@@ -42,6 +44,8 @@ export default function SettingsPage() {
   useEffect(() => {
     if (user) {
       setFormData({
+        email: user.email || '',
+        email2: user.email2 || '',
         partnerName1: user.partnerName1 || '',
         partnerName2: user.partnerName2 || '',
         relationshipStartDate: user.relationshipStartDate || '',
@@ -49,7 +53,6 @@ export default function SettingsPage() {
         avatarUrl2: user.avatarUrl2 || '',
         playlistUrl: user.playlistUrl || '',
       });
-      setNotificationEmail(user.email || '');
     }
   }, [user]);
 
@@ -68,6 +71,8 @@ export default function SettingsPage() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          email: formData.email,
+          email2: formData.email2 || null,
           partnerName1: formData.partnerName1,
           partnerName2: formData.partnerName2 || null,
           relationshipStartDate: formData.relationshipStartDate,
@@ -86,6 +91,8 @@ export default function SettingsPage() {
       if (user) {
         setUser({
           ...user,
+          email: formData.email,
+          email2: formData.email2 || null,
           partnerName1: formData.partnerName1,
           partnerName2: formData.partnerName2 || null,
           relationshipStartDate: formData.relationshipStartDate,
@@ -193,19 +200,17 @@ export default function SettingsPage() {
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Avatar URL (Partner 1)"
-                name="avatarUrl1"
+              <MediaUpload
+                label="Avatar (Partner 1)"
                 value={formData.avatarUrl1}
-                onChange={handleInputChange}
-                placeholder="https://images.unsplash.com/... or a public URL"
+                onChange={(url) => setFormData(prev => ({ ...prev, avatarUrl1: url }))}
+                placeholder="Avatar link or upload"
               />
-              <Input
-                label="Avatar URL (Partner 2)"
-                name="avatarUrl2"
+              <MediaUpload
+                label="Avatar (Partner 2)"
                 value={formData.avatarUrl2}
-                onChange={handleInputChange}
-                placeholder="https://images.unsplash.com/... or a public URL"
+                onChange={(url) => setFormData(prev => ({ ...prev, avatarUrl2: url }))}
+                placeholder="Avatar link or upload"
               />
             </div>
           </Card>
@@ -217,15 +222,26 @@ export default function SettingsPage() {
               <Bell className="h-4.5 w-4.5 mr-1.5 text-rose-500" /> Reminder Configurations
             </h3>
 
-            <Input
-              label="Primary Notification Email"
-              name="notificationEmail"
-              type="email"
-              disabled
-              value={notificationEmail}
-              className="opacity-70 bg-zinc-100 cursor-not-allowed border-rose-100"
-              placeholder="Primary email"
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Email Address (Partner 1)"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="partner1@example.com"
+              />
+              <Input
+                label="Email Address (Partner 2)"
+                name="email2"
+                type="email"
+                required
+                value={formData.email2}
+                onChange={handleInputChange}
+                placeholder="partner2@example.com"
+              />
+            </div>
 
             <div className="space-y-3 pt-2">
               <span className="text-[10px] font-black tracking-wide uppercase text-zinc-400 pl-1">

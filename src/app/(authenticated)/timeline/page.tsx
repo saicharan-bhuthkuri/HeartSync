@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { Input, Textarea, Select } from '@/components/ui/Input';
 import { Plus, Edit, Trash2, Calendar, Sparkles, BookOpen, AlertCircle, Heart, MessageSquare, Phone, Gift, Star, Award, MapPin } from 'lucide-react';
+import { MediaUpload } from '@/components/ui/MediaUpload';
 
 interface Milestone {
   id: string;
@@ -359,11 +360,26 @@ export default function TimelinePage() {
                   {milestone.photo_url && (
                     <div className="mt-5 p-3 pb-8 bg-white border border-rose-500/5 shadow-md rounded-[4px] max-w-xl mx-auto rotate-[0.5deg]">
                       <div className="rounded-xs overflow-hidden max-h-96 w-full border border-zinc-100">
-                        <img
-                          src={milestone.photo_url}
-                          alt={milestone.title}
-                          className="object-cover w-full h-full hover:scale-[1.01] transition-transform duration-500"
-                        />
+                        {(() => {
+                          const lower = milestone.photo_url.toLowerCase();
+                          const isVid = ['.mp4', '.webm', '.ogg', '.mov'].some(ext => lower.endsWith(ext)) || lower.includes('video') || lower.includes('/uploads/video');
+                          if (isVid) {
+                            return (
+                              <video
+                                src={milestone.photo_url}
+                                className="w-full h-full object-cover max-h-96"
+                                controls
+                              />
+                            );
+                          }
+                          return (
+                            <img
+                              src={milestone.photo_url}
+                              alt={milestone.title}
+                              className="object-cover w-full h-full hover:scale-[1.01] transition-transform duration-500"
+                            />
+                          );
+                        })()}
                       </div>
                       <div className="mt-3 text-center text-[10px] text-zinc-400 font-serif italic">
                         ❤ Captured on {formatFriendlyDate(milestone.event_date)}
@@ -417,13 +433,11 @@ export default function TimelinePage() {
             placeholder="Tell the story of this special moment..."
           />
 
-          <Input
-            label="Optional Photo URL"
-            name="photoUrl"
-            type="url"
+          <MediaUpload
+            label="Optional Photo / Video"
             value={formData.photoUrl}
-            onChange={handleFormChange}
-            placeholder="e.g. https://images.unsplash.com/... or a public link"
+            onChange={(url) => setFormData(prev => ({ ...prev, photoUrl: url }))}
+            placeholder="e.g. URL starting with https:// or upload a file"
           />
 
           <div className="pt-2 flex justify-end space-x-2">
@@ -475,13 +489,11 @@ export default function TimelinePage() {
             onChange={handleFormChange}
           />
 
-          <Input
-            label="Photo URL"
-            name="photoUrl"
-            type="url"
+          <MediaUpload
+            label="Photo / Video"
             value={formData.photoUrl}
-            onChange={handleFormChange}
-            placeholder="e.g. URL starting with https://"
+            onChange={(url) => setFormData(prev => ({ ...prev, photoUrl: url }))}
+            placeholder="e.g. URL starting with https:// or upload a file"
           />
 
           <div className="pt-2 flex justify-end space-x-2">

@@ -133,6 +133,15 @@ export async function initDb() {
         // Column probably already exists, which is expected on subsequent runs
       }
 
+      // Safely alter users table to add email_2
+      try {
+        await db.execute(`
+          ALTER TABLE users ADD COLUMN email_2 TEXT;
+        `);
+      } catch (err) {
+        // Column probably already exists
+      }
+
       console.log('Database initialized successfully or verified existing schema.');
     } catch (error) {
       console.error('Error during database initialization:', error);

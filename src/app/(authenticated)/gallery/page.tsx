@@ -138,12 +138,33 @@ export default function GalleryPage() {
                 {idx % 2 === 0 ? <div className="washi-tape" /> : <div className="washi-tape-gold" />}
 
                 <div className="bg-[#FAF3F0] w-full aspect-square overflow-hidden rounded-xs border border-[#f0e6e2] relative group pt-1">
-                  <img
-                    src={item.photoUrl}
-                    alt={item.title}
-                    className="object-cover w-full h-full"
-                    loading="lazy"
-                  />
+                  {(() => {
+                    const lower = item.photoUrl.toLowerCase();
+                    const isVid = ['.mp4', '.webm', '.ogg', '.mov'].some(ext => lower.endsWith(ext)) || lower.includes('video') || lower.includes('/uploads/video');
+                    if (isVid) {
+                      return (
+                        <video
+                          src={item.photoUrl}
+                          className="object-cover w-full h-full"
+                          muted
+                          playsInline
+                          onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.pause();
+                            e.currentTarget.currentTime = 0;
+                          }}
+                        />
+                      );
+                    }
+                    return (
+                      <img
+                        src={item.photoUrl}
+                        alt={item.title}
+                        className="object-cover w-full h-full"
+                        loading="lazy"
+                      />
+                    );
+                  })()}
                   
                   {/* Source Badge overlay */}
                   <span className="absolute top-2.5 right-2.5 text-[8px] font-black uppercase tracking-wider bg-white/90 text-rose-600 px-2 py-0.5 rounded-sm border border-rose-100 shadow-xs flex items-center">
@@ -183,11 +204,27 @@ export default function GalleryPage() {
             
             <div className="polaroid-frame inline-block max-w-full rotate-0">
               <div className="rounded-xs overflow-hidden max-h-[450px] border border-zinc-150">
-                <img
-                  src={selectedItem.photoUrl}
-                  alt={selectedItem.title}
-                  className="object-contain max-h-[450px] mx-auto w-full"
-                />
+                {(() => {
+                  const lower = selectedItem.photoUrl.toLowerCase();
+                  const isVid = ['.mp4', '.webm', '.ogg', '.mov'].some(ext => lower.endsWith(ext)) || lower.includes('video') || lower.includes('/uploads/video');
+                  if (isVid) {
+                    return (
+                      <video
+                        src={selectedItem.photoUrl}
+                        className="object-contain max-h-[450px] mx-auto w-full"
+                        controls
+                        autoPlay
+                      />
+                    );
+                  }
+                  return (
+                    <img
+                      src={selectedItem.photoUrl}
+                      alt={selectedItem.title}
+                      className="object-contain max-h-[450px] mx-auto w-full"
+                    />
+                  );
+                })()}
               </div>
               <div className="text-left mt-4 px-1 space-y-1.5">
                 <h3 className="font-serif italic font-extrabold text-xl text-zinc-900 leading-tight">

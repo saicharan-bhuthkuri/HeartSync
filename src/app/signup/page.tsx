@@ -15,6 +15,7 @@ export default function SignupPage() {
 
   const [formData, setFormData] = useState({
     email: '',
+    email2: '',
     password: '',
     partnerName1: '',
     partnerName2: '',
@@ -38,6 +39,7 @@ export default function SignupPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
+          email2: formData.email2,
           password: formData.password,
           partnerName1: formData.partnerName1,
           partnerName2: formData.partnerName2 || null,
@@ -90,18 +92,29 @@ export default function SignupPage() {
             )}
 
             <Input
-              label="Email Address"
+              label="Email (Partner 1)"
               name="email"
               type="email"
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="together@heartsync.app"
+              placeholder="partner1@example.com"
               autoComplete="email"
             />
 
             <Input
-              label="Password"
+              label="Email (Partner 2)"
+              name="email2"
+              type="email"
+              required
+              value={formData.email2}
+              onChange={handleChange}
+              placeholder="partner2@example.com"
+              autoComplete="email"
+            />
+
+            <Input
+              label="Shared Password"
               name="password"
               type="password"
               required

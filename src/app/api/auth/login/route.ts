@@ -15,10 +15,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Find user
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Find user by either email or email_2
     const userRes = await db.execute({
-      sql: 'SELECT * FROM users WHERE email = ? LIMIT 1',
-      args: [email.toLowerCase().trim()],
+      sql: 'SELECT * FROM users WHERE email = ? OR email_2 = ? LIMIT 1',
+      args: [cleanEmail, cleanEmail],
     });
 
     if (userRes.rows.length === 0) {
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
 
     const userId = dbUser.id as string;
 
-    // Create session JWT
+    // Create session JWT (always sign with primary email, but both work for session lookup)
     const token = await signJWT({ userId, email: dbUser.email as string });
 
     // Set cookie
@@ -59,6 +61,7 @@ export async function POST(request: Request) {
       user: {
         id: userId,
         email: dbUser.email,
+        email2: dbUser.email_2,
         partnerName1: dbUser.partner_name_1,
         partnerName2: dbUser.partner_name_2,
         relationshipStartDate: dbUser.relationship_start_date,

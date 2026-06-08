@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 export interface User {
   id: string;
   email: string;
+  email2?: string | null;
   partnerName1: string;
   partnerName2: string | null;
   relationshipStartDate: string; // YYYY-MM-DD

@@ -151,7 +151,7 @@ export default function LoveMapPage() {
             Interactive Pinboard Canvas
           </h3>
           
-          <div className="relative border border-[#f5eae5] rounded-2xl bg-[#faf6f3] overflow-hidden aspect-[16/9] shadow-inner select-none cursor-crosshair">
+          <div className="relative border border-[#f5eae5] rounded-2xl bg-[#faf6f3] overflow-hidden aspect-video shadow-inner select-none cursor-crosshair">
             {/* Grid paper lines overlay */}
             <div className="absolute inset-0 opacity-15" style={{
               backgroundImage: 'radial-gradient(#db2777 0.5px, transparent 0.5px), radial-gradient(#db2777 0.5px, #faf6f3 0.5px)',
@@ -214,7 +214,7 @@ export default function LoveMapPage() {
         {/* Pin Details / Polaroid Display panel */}
         <div className="space-y-6">
           {selectedPin ? (
-            <div className="polaroid-frame relative w-full aspect-[4/5] flex flex-col justify-between pt-5">
+            <div className="polaroid-frame relative w-full aspect-4/5 flex flex-col justify-between pt-5">
               <div className="washi-tape-gold" />
               
               <div className="bg-[#FAF3F0] w-full aspect-square relative flex items-center justify-center text-rose-300 border border-[#f0e6e2] rounded-xs overflow-hidden">

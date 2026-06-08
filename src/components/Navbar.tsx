@@ -97,7 +97,7 @@ export function Navbar() {
 
               {isDropdownOpen && (
                 <div className="absolute top-10 left-0 w-48 bg-white border border-rose-100 shadow-xl rounded-2xl py-2 px-1.5 z-50 animate-fade-in-up mt-1">
-                  <div className="washi-tape-gold !w-[60px]" />
+                  <div className="washi-tape-gold w-[60px]!" />
                   <div className="pt-2">
                     {moreItems.map((item) => {
                       const Icon = item.icon;

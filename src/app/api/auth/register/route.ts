@@ -6,24 +6,27 @@ import { cookies } from 'next/headers';
 export async function POST(request: Request) {
   try {
     await initDb();
-    const { email, password, partnerName1, partnerName2, relationshipStartDate } = await request.json();
+    const { email, email2, password, partnerName1, partnerName2, relationshipStartDate } = await request.json();
 
-    if (!email || !password || !partnerName1 || !relationshipStartDate) {
+    if (!email || !email2 || !password || !partnerName1 || !relationshipStartDate) {
       return NextResponse.json(
-        { error: 'Email, password, partner name 1, and relationship start date are required' },
+        { error: 'Both partner emails, password, partner name 1, and relationship start date are required' },
         { status: 400 }
       );
     }
 
-    // Check if user already exists
+    const email1Clean = email.toLowerCase().trim();
+    const email2Clean = email2.toLowerCase().trim();
+
+    // Check if either email is already registered on any account (main or partner email)
     const existingUserRes = await db.execute({
-      sql: 'SELECT id FROM users WHERE email = ? LIMIT 1',
-      args: [email.toLowerCase().trim()],
+      sql: 'SELECT id FROM users WHERE email = ? OR email_2 = ? OR email = ? OR email_2 = ? LIMIT 1',
+      args: [email1Clean, email1Clean, email2Clean, email2Clean],
     });
 
     if (existingUserRes.rows.length > 0) {
       return NextResponse.json(
-        { error: 'An account with this email already exists' },
+        { error: 'An account with one of these emails already exists' },
         { status: 400 }
       );
     }
@@ -36,12 +39,13 @@ export async function POST(request: Request) {
     await db.execute({
       sql: `
         INSERT INTO users (
-          id, email, password_hash, partner_name_1, partner_name_2, relationship_start_date, theme_preference
-        ) VALUES (?, ?, ?, ?, ?, ?, 'system')
+          id, email, email_2, password_hash, partner_name_1, partner_name_2, relationship_start_date, theme_preference
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, 'system')
       `,
       args: [
         userId,
-        email.toLowerCase().trim(),
+        email1Clean,
+        email2Clean,
         hashedPassword,
         partnerName1.trim(),
         partnerName2 ? partnerName2.trim() : null,
@@ -50,7 +54,7 @@ export async function POST(request: Request) {
     });
 
     // Create session JWT
-    const token = await signJWT({ userId, email: email.toLowerCase().trim() });
+    const token = await signJWT({ userId, email: email1Clean });
 
     // Set cookie
     const cookieStore = await cookies();
@@ -65,7 +69,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       user: {
         id: userId,
-        email: email.toLowerCase().trim(),
+        email: email1Clean,
+        email2: email2Clean,
         partnerName1: partnerName1.trim(),
         partnerName2: partnerName2 ? partnerName2.trim() : null,
         relationshipStartDate,

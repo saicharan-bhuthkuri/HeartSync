@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --font-outfit: 'Outfit', sans-serif;
+  --font-cormorant: 'Cormorant Garamond', serif;
   --background: #fefaf8; /* Cozy warm cream background */
   --foreground: #3a1e22; /* Soft elegant deep chocolate wine */
   
