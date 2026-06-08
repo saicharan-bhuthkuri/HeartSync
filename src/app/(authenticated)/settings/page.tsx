@@ -5,10 +5,13 @@ import { useApp } from '@/components/AppContext';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Settings, Save, AlertCircle, CheckCircle, Bell, User } from 'lucide-react';
+import { Dialog } from '@/components/ui/Dialog';
+import { Settings, Save, AlertCircle, CheckCircle, Bell, User, Music, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
   const { user, setUser } = useApp();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     partnerName1: '',
@@ -16,6 +19,7 @@ export default function SettingsPage() {
     relationshipStartDate: '',
     avatarUrl1: '',
     avatarUrl2: '',
+    playlistUrl: '',
   });
 
   // Reminder settings state
@@ -30,6 +34,11 @@ export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
+  // Deletion state
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -38,6 +47,7 @@ export default function SettingsPage() {
         relationshipStartDate: user.relationshipStartDate || '',
         avatarUrl1: user.avatarUrl1 || '',
         avatarUrl2: user.avatarUrl2 || '',
+        playlistUrl: user.playlistUrl || '',
       });
       setNotificationEmail(user.email || '');
     }
@@ -63,6 +73,7 @@ export default function SettingsPage() {
           relationshipStartDate: formData.relationshipStartDate,
           avatarUrl1: formData.avatarUrl1 || null,
           avatarUrl2: formData.avatarUrl2 || null,
+          playlistUrl: formData.playlistUrl || null,
         }),
       });
 
@@ -80,6 +91,7 @@ export default function SettingsPage() {
           relationshipStartDate: formData.relationshipStartDate,
           avatarUrl1: formData.avatarUrl1 || null,
           avatarUrl2: formData.avatarUrl2 || null,
+          playlistUrl: formData.playlistUrl || null,
         });
       }
 
@@ -91,6 +103,29 @@ export default function SettingsPage() {
       setStatus({ type: 'error', message: err.message || 'Failed to save settings' });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText.toLowerCase() !== 'delete my space') return;
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch('/api/user/delete', {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete space');
+      }
+
+      setUser(null);
+      setIsDeleteOpen(false);
+      router.push('/login');
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Could not delete your space');
+      setIsDeleting(false);
     }
   };
 
@@ -225,10 +260,49 @@ export default function SettingsPage() {
               </div>
             </div>
           </Card>
+
+          {/* SHARED PLAYLIST INTEGRATION */}
+          <Card variant="glass" className="space-y-4 bg-white/80 relative overflow-hidden pt-6">
+            <div className="washi-tape-gold" />
+            <h3 className="text-xs font-black uppercase tracking-wider text-zinc-400 flex items-center mb-2 pt-2">
+              <Music className="h-4.5 w-4.5 mr-1.5 text-rose-500" /> Our Soundtrack Playlist
+            </h3>
+
+            <Input
+              label="Shared Spotify / YouTube Embed URL"
+              name="playlistUrl"
+              value={formData.playlistUrl}
+              onChange={handleInputChange}
+              placeholder="e.g. https://open.spotify.com/embed/playlist/... or YouTube embed URL"
+            />
+
+            <div className="text-xs text-zinc-400 font-medium pl-1 leading-relaxed">
+              💡 <strong>How to get this link:</strong> Go to Spotify, click <strong>Share</strong> → <strong>Embed playlist/track</strong>, copy the link inside the <code>src="..."</code> attribute, and paste it here.
+            </div>
+
+            {formData.playlistUrl && (
+              <div className="mt-4 pt-2 border-t border-rose-100">
+                <span className="text-[10px] font-black tracking-wide uppercase text-zinc-400 block mb-2 pl-1">
+                  Preview Widget
+                </span>
+                <div className="rounded-2xl overflow-hidden shadow-xs border border-rose-100 bg-[#fdfaf8] h-[80px]">
+                  <iframe
+                    src={formData.playlistUrl}
+                    width="100%"
+                    height="80"
+                    frameBorder="0"
+                    allowFullScreen={false}
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            )}
+          </Card>
         </div>
 
-        {/* SAVE BUTTON CONTAINER */}
-        <div className="space-y-6">
+        {/* SAVE & DELETE SIDEBAR */}
+        <div className="space-y-6 flex flex-col">
           <Button
             type="submit"
             className="w-full flex items-center justify-center py-3 rounded-2xl shadow-md shadow-pink-500/10 border-0 bg-linear-to-r from-pink-500 to-rose-450 hover:from-pink-600 hover:to-rose-550 text-white font-extrabold uppercase tracking-wider text-xs"
@@ -236,8 +310,73 @@ export default function SettingsPage() {
           >
             <Save className="h-4 w-4 mr-2" /> Save All Settings
           </Button>
+
+          {/* DANGER ZONE */}
+          <Card className="border-red-200 bg-red-50/20 p-5 space-y-4 rounded-3xl mt-2 text-left">
+            <h3 className="text-xs font-black uppercase tracking-wider text-red-600 flex items-center">
+              <AlertCircle className="h-4 w-4 mr-1 text-red-500" /> Danger Zone
+            </h3>
+            <p className="text-[11px] text-zinc-550 leading-relaxed font-semibold">
+              Deleting your account permanently wipes out your couple's space. All milestones, memories, journal entries, bucket lists, love map pins, and sealed capsules will be lost forever.
+            </p>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={() => {
+                setDeleteConfirmText('');
+                setIsDeleteOpen(true);
+              }}
+              className="w-full flex items-center justify-center py-2.5 rounded-2xl shadow-sm text-xs font-extrabold uppercase tracking-wide"
+            >
+              <Trash2 className="h-4 w-4 mr-1.5" /> Delete Space & Account
+            </Button>
+          </Card>
         </div>
       </form>
+
+      {/* CONFIRMATION DIALOG MODAL */}
+      <Dialog
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        title="Delete Couples Space permanently?"
+      >
+        <div className="space-y-4 text-left">
+          <p className="text-sm text-zinc-650 font-medium">
+            This action is permanent and irreversible. All milestones, photos, memories, maps, bucket lists, and locked capsule letters will be immediately and completely deleted.
+          </p>
+
+          <div className="p-3.5 rounded-2xl bg-red-500/5 border border-red-500/10 text-xs text-red-650 flex items-start">
+            <AlertCircle className="h-4.5 w-4.5 mr-2 shrink-0 mt-0.5 text-red-500" />
+            <span>To confirm, please type <strong className="underline text-red-700">delete my space</strong> in the box below.</span>
+          </div>
+
+          <Input
+            value={deleteConfirmText}
+            onChange={(e) => setDeleteConfirmText(e.target.value)}
+            placeholder="Type 'delete my space' to confirm..."
+            containerClassName="w-full"
+          />
+
+          <div className="pt-2 flex justify-end space-x-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsDeleteOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="danger"
+              disabled={deleteConfirmText.toLowerCase() !== 'delete my space'}
+              isLoading={isDeleting}
+              onClick={handleDeleteAccount}
+            >
+              Yes, Delete My Space
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

@@ -23,7 +23,7 @@ export async function GET() {
 
     // Get user details from database
     const userRes = await db.execute({
-      sql: 'SELECT id, email, partner_name_1, partner_name_2, relationship_start_date, theme_preference, avatar_url_1, avatar_url_2 FROM users WHERE id = ? LIMIT 1',
+      sql: 'SELECT id, email, partner_name_1, partner_name_2, relationship_start_date, theme_preference, avatar_url_1, avatar_url_2, playlist_url FROM users WHERE id = ? LIMIT 1',
       args: [payload.userId],
     });
 
@@ -45,6 +45,7 @@ export async function GET() {
         themePreference: dbUser.theme_preference || 'system',
         avatarUrl1: dbUser.avatar_url_1,
         avatarUrl2: dbUser.avatar_url_2,
+        playlistUrl: dbUser.playlist_url,
       },
     });
   } catch (error) {

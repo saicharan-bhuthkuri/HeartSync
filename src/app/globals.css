@@ -215,3 +215,8 @@ body {
 .pb-safe {
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
+
+/* Re-hide Next.js dev badge */
+next-dev-badge, #__next-dev-badge, [id*="next-dev-badge"] {
+  display: none !important;
+}

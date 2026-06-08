@@ -19,7 +19,7 @@ export async function PATCH(request: Request) {
     }
 
     const body = await request.json();
-    const { partnerName1, partnerName2, relationshipStartDate, themePreference, avatarUrl1, avatarUrl2 } = body;
+    const { partnerName1, partnerName2, relationshipStartDate, themePreference, avatarUrl1, avatarUrl2, playlistUrl } = body;
 
     // Build dynamic SQL query for updates
     const updates: string[] = [];
@@ -48,6 +48,10 @@ export async function PATCH(request: Request) {
     if (avatarUrl2 !== undefined) {
       updates.push('avatar_url_2 = ?');
       args.push(avatarUrl2);
+    }
+    if (playlistUrl !== undefined) {
+      updates.push('playlist_url = ?');
+      args.push(playlistUrl ? playlistUrl.trim() : null);
     }
 
     if (updates.length === 0) {

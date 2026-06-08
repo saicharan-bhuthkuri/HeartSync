@@ -12,6 +12,7 @@ export interface User {
   themePreference: 'light' | 'dark' | 'system';
   avatarUrl1?: string | null;
   avatarUrl2?: string | null;
+  playlistUrl?: string | null;
 }
 
 interface AppContextType {
